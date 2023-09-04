@@ -54,7 +54,8 @@ Check the tasks given in readme file before proceeding.
         <img class="image" src="https://github.com/mekala-vamsi-krishna/VERDICT/assets/68817698/7421f6a0-cc21-466e-b3eb-1a1f23f2f8bc" width=250 alt="Image 6">
         <img class="image" src="https://github.com/mekala-vamsi-krishna/VERDICT/assets/68817698/2138a6c0-a8b5-4ea4-96da-cd45748e7b47" width=250 alt="Image 7">
         <img class="image" src="https://github.com/mekala-vamsi-krishna/VERDICT/assets/68817698/8427d427-149b-4604-8144-de9702b6525e" width=250 alt="Image 8">
+        <img class="image" src="https://github.com/mekala-vamsi-krishna/VERDICT/assets/68817698/5167c06e-8a31-449e-808a-6946b344a046" width=250 alt="Image 8">
     </div>
 </body>
-</html>
+
 
