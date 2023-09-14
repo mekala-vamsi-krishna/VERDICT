@@ -28,7 +28,7 @@ class TopRatedViewController: UIViewController {
         topRatedTable.delegate = self
         topRatedTable.dataSource = self
         headerView = SegmentedHeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 60))
-        
+        headerView?.delegate = self
         topRatedTable.tableHeaderView = headerView
         view.addSubview(topRatedTable)
         view.backgroundColor = UIColor(named: "BackgroundColor")
@@ -163,4 +163,54 @@ extension TopRatedViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 
+}
+
+extension TopRatedViewController: SegmentedHeaderViewDelegate {
+    func didChangeSegment(_ segment: Int) {
+        titles.removeAll()
+        if segment == 0 {
+            fetchTopRatedMovies(page: currentPage, refresh: false)
+        } else {
+            fetchTopRatedTv(page: currentPage, refresh: false)
+        }
+        self.topRatedTable.reloadData()
+    }
+}
+
+
+class LoadingView: UIView {
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .gray // Set the color as per your preference
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupUI()
+    }
+
+    private func setupUI() {
+        addSubview(activityIndicator)
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+
+    func startLoading() {
+        activityIndicator.startAnimating()
+        isHidden = false
+    }
+
+    func stopLoading() {
+        activityIndicator.stopAnimating()
+        isHidden = true
+    }
 }

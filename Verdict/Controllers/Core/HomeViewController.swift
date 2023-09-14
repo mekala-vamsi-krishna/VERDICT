@@ -1,5 +1,4 @@
 import UIKit
-import SideMenu
 
 enum Sections: Int {
     case TrendingMovies = 0
