@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol SegmentedHeaderViewDelegate: AnyObject {
+    func didChangeSegment(_ segment: Int)
+}
+
 class SegmentedHeaderView: UIView {
+    
+    var delegate: SegmentedHeaderViewDelegate?
     
     public let movieSeriesSegment: UISegmentedControl = {
         let items = ["Movies", "Series"]
@@ -16,11 +22,11 @@ class SegmentedHeaderView: UIView {
         segment.selectedSegmentTintColor = .systemBlue
         segment.backgroundColor = .clear
         segment.layer.cornerRadius = 20
-        segment.layer.borderWidth = 1.0
-        segment.layer.borderColor = UIColor.white.cgColor
-        segment.clipsToBounds = true
-        segment.layer.masksToBounds = true
-//        segment.addTarget(self, action: #selector(handleSegment), for: .valueChanged)
+//        segment.layer.borderWidth = 1.0
+//        segment.layer.borderColor = UIColor.white.cgColor
+        segment.clipsToBounds = false
+        segment.layer.masksToBounds = false
+        segment.addTarget(self, action: #selector(handleSegment), for: .valueChanged)
         segment.translatesAutoresizingMaskIntoConstraints = false
         return segment
     }()
@@ -40,14 +46,8 @@ class SegmentedHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func handleSegment() {
-        let vc = TopRatedViewController()
-        if movieSeriesSegment.selectedSegmentIndex == 0 {
-            vc.fetchTopRatedMovies(page: 1, refresh: true)
-        } else {
-            vc.fetchTopRatedTv(page: 1, refresh: true)
-        }
-        vc.topRatedTable.reloadData()
+    @objc func handleSegment(segment: UISegmentedControl) {
+        delegate?.didChangeSegment(segment.selectedSegmentIndex)
     }
     
     private func applyConstraints() {
