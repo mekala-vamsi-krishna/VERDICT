@@ -25,8 +25,6 @@ class FavouritesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavbar()
-        
         title = "Favourites"
         navigationController?.navigationBar.prefersLargeTitles = true
         
@@ -45,24 +43,6 @@ class FavouritesViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         favouritesTable.frame = view.bounds
-    }
-    
-    private func configureNavbar() {
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
-        imageView.contentMode = .scaleAspectFit
-        let image = UIImage(named: "VerdictLogo")
-        imageView.image = image
-        navigationItem.titleView = imageView
-        navigationController?.navigationBar.isTranslucent = true
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: #selector(handleAccountVC))
-        
-        navigationController?.navigationBar.tintColor = .systemBlue
-    }
-    
-    @objc func handleAccountVC() {
-        let vc = MyAccountViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     private func fetchFavourites() {

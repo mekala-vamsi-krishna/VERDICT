@@ -16,19 +16,19 @@ class MainTabBarViewController: UITabBarController {
         let vc2 = UINavigationController(rootViewController: SearchViewController())
         let vc3 = UINavigationController(rootViewController: UpComingViewController())
         let vc4 = UINavigationController(rootViewController: TopRatedViewController())
-        let vc5 = UINavigationController(rootViewController: FavouritesViewController())
+        let vc5 = UINavigationController(rootViewController: ProfileViewController())
         
         vc1.tabBarItem.image = UIImage(systemName: "house")
         vc2.tabBarItem.image = UIImage(systemName: "magnifyingglass")
         vc3.tabBarItem.image = UIImage(systemName: "play.circle")
         vc4.tabBarItem.image = UIImage(systemName: "star.circle")
-        vc5.tabBarItem.image = UIImage(systemName: "star")
+        vc5.tabBarItem.image = UIImage(systemName: "person.crop.circle.fill")
         
         vc1.title = "Home"
         vc2.title = "Search"
         vc3.title = "Up Coming"
         vc4.title = "Top Rated"
-        vc5.title = "Favourites"
+        vc5.title = "Profile"
         
         
         tabBar.tintColor = .white

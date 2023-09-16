@@ -36,6 +36,9 @@
 		15E349FC29754C19006DCA31 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E349FB29754C19006DCA31 /* SearchTableViewCell.swift */; };
 		15F333EA295B0CA500E2BF90 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F333E9295B0CA400E2BF90 /* SearchResultsViewController.swift */; };
 		AC0EEE2B2A9B19650031ED38 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0EEE2A2A9B19650031ED38 /* DetailsViewController.swift */; };
+		AC103B502AB36A54009A3593 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC103B4F2AB36A54009A3593 /* ProfileViewController.swift */; };
+		AC103B522AB37070009A3593 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC103B512AB37070009A3593 /* ProfileHeaderView.swift */; };
+		AC4D4A722AB48AA500C4AAB1 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC4D4A712AB48AA500C4AAB1 /* ProfileTableViewCell.swift */; };
 		AC9F50442AA4E20B00A39F62 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F50432AA4E20B00A39F62 /* MovieDetail.swift */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +73,9 @@
 		15E349FB29754C19006DCA31 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		15F333E9295B0CA400E2BF90 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		AC0EEE2A2A9B19650031ED38 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		AC103B4F2AB36A54009A3593 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		AC103B512AB37070009A3593 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		AC4D4A712AB48AA500C4AAB1 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		AC9F50432AA4E20B00A39F62 /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -127,6 +133,7 @@
 				15A1C1F22955F107006849BC /* UpComingViewController.swift */,
 				15A1C1F42955F110006849BC /* TopRatedViewController.swift */,
 				15AD7EC9296498CE00029193 /* FavouritesViewController.swift */,
+				AC103B4F2AB36A54009A3593 /* ProfileViewController.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -173,6 +180,8 @@
 				15B6ABAD297413B2002BEBC1 /* SegmentedHeaderView.swift */,
 				15E349FB29754C19006DCA31 /* SearchTableViewCell.swift */,
 				151C8450298D6FFD009DB7AE /* FavouritesTableViewCell.swift */,
+				AC103B512AB37070009A3593 /* ProfileHeaderView.swift */,
+				AC4D4A712AB48AA500C4AAB1 /* ProfileTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -265,6 +274,7 @@
 				15A1C1F12955F0F3006849BC /* SearchViewController.swift in Sources */,
 				15A1C1F52955F110006849BC /* TopRatedViewController.swift in Sources */,
 				15A1C2442956D42B006849BC /* CollectionViewTableViewCell.swift in Sources */,
+				AC4D4A722AB48AA500C4AAB1 /* ProfileTableViewCell.swift in Sources */,
 				AC9F50442AA4E20B00A39F62 /* MovieDetail.swift in Sources */,
 				151C8456298E43D2009DB7AE /* FavouritesDataPersistantManager.swift in Sources */,
 				15A1C1F72955F11B006849BC /* MyAccountViewController.swift in Sources */,
@@ -277,9 +287,11 @@
 				AC0EEE2B2A9B19650031ED38 /* DetailsViewController.swift in Sources */,
 				15F333EA295B0CA500E2BF90 /* SearchResultsViewController.swift in Sources */,
 				15A1C1DB2955ED86006849BC /* AppDelegate.swift in Sources */,
+				AC103B522AB37070009A3593 /* ProfileHeaderView.swift in Sources */,
 				15A4A895296FE6A400757D89 /* LoadingTableViewCell.swift in Sources */,
 				15A1C2462956D42B006849BC /* TitleTableViewCell.swift in Sources */,
 				15A1C2432956D42A006849BC /* TitleCollectionViewCell.swift in Sources */,
+				AC103B502AB36A54009A3593 /* ProfileViewController.swift in Sources */,
 				15A1C1DD2955ED86006849BC /* SceneDelegate.swift in Sources */,
 				15A1C23C2956D422006849BC /* Movie.swift in Sources */,
 				15B6ABAE297413B2002BEBC1 /* SegmentedHeaderView.swift in Sources */,
