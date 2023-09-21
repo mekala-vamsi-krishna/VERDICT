@@ -168,7 +168,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             
         case Sections.Upcoming.rawValue:
             
-            VDNetworking.shared.getUpcomingMovies { result in
+            VDNetworking.shared.getUpcomingMovies(page: 1) { result in
                 switch result {
                 case .success(let titles):
                     cell.configure(with: titles)
@@ -179,7 +179,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             
         case Sections.TopRated.rawValue:
             
-            VDNetworking.shared.getTopRated(page: 1) { result in
+            VDNetworking.shared.getTopRatedMovies(page: 1) { result in
                 switch result {
                 case .success(let titles):
                     cell.configure(with: titles)
@@ -229,7 +229,7 @@ extension HomeViewController: CollectionViewTableViewCellDelegate {
         DispatchQueue.main.async { [weak self] in
             let detailsVC = DetailsViewController()
             detailsVC.configure(with: model)
-            detailsVC.getPoser(with: model)
+            detailsVC.getPoster(with: model)
             self?.navigationController?.pushViewController(detailsVC, animated: true)
         }
     }
@@ -263,7 +263,7 @@ extension HomeViewController: UISearchResultsUpdating, SearchResultsViewControll
         DispatchQueue.main.async { [weak self] in
             let detailsVC = DetailsViewController()
             detailsVC.configure(with: model)
-            detailsVC.getPoser(with: model)
+            detailsVC.getPoster(with: model)
             self?.navigationController?.pushViewController(detailsVC, animated: true)
         }
     }

@@ -40,11 +40,41 @@ class DetailsViewController: UIViewController {
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 1
+        stackView.spacing = 5
         stackView.distribution = .fillProportionally
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
+    }()
+    
+    private let yearLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.gray
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let genreLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.gray
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let durationLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.gray
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.textAlignment = .right
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private let ratingStackView: UIStackView = {
@@ -113,9 +143,9 @@ class DetailsViewController: UIViewController {
         containerView.addSubview(movieImageView)
         containerView.addSubview(movieTitle)
         
-        let yearLabel = createLabel(withText: "2013")
-        let genreLabel = createLabel(withText: "Adventure, Action")
-        let durationLabel = createLabel(withText: "2h 30m")
+//        let yearLabel = createLabel(withText: "2013")
+//        let genreLabel = createLabel(withText: "Adventure, Action")
+//        let durationLabel = createLabel(withText: "2h 30m")
         containerView.addSubview(stackView)
         stackView.addArrangedSubview(yearLabel)
         stackView.addArrangedSubview(genreLabel)
@@ -144,7 +174,7 @@ class DetailsViewController: UIViewController {
             movieTitle.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -70),
             
             stackView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -50),
+            stackView.topAnchor.constraint(equalTo: movieTitle.bottomAnchor, constant: 10),
             stackView.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.7),
             
             ratingStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -173,23 +203,36 @@ class DetailsViewController: UIViewController {
     }
     func configure(with model: MovieDetail) {
         movieTitle.text = model.title
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+
+        if let date = dateFormatter.date(from: model.release_date ?? "00-00-00") {
+            let calendar = Calendar.current
+            let year = calendar.component(.year, from: date)
+            yearLabel.text = String("\(year)")
+        } else {
+            yearLabel.text = model.release_date
+        }
+        
+        genreLabel.text = model.genres?.map {$0.name ?? ""}.lazy.joined(separator: ", ")
+        durationLabel.text = "\(model.runtime ?? 0) min"
         usersRatingLabel.updateRating(
             criticsText: "Users\nRating",
-            ratingText: String(format: "%.1f ★", model.vote_average)
+            ratingText: String(format: "%.1f ★", model.vote_average ?? 0.0)
         )
         coreCriticsRatingLabel.updateRating(
             criticsText: "Core Critics\nRating",
-            ratingText: String(format: "%.1f ★", model.vote_average)
+            ratingText: String(format: "%.1f ★", model.vote_average ?? 0.0)
         )
         criticsRatingLabel.updateRating(
             criticsText: "Critics\nRating",
-            ratingText: String(format: "%.1f ★", model.vote_average)
+            ratingText: String(format: "%.1f ★", model.vote_average ?? 0.0)
         )
-        descriptionLabel.text = "Summary:\n\(model.overview)"
+        descriptionLabel.text = "Summary:\n\(model.overview ?? ""))"
     }
     
 
-    func getPoser(with model: MovieDetail) {
+    func getPoster(with model: MovieDetail) {
         if let posterPath = model.poster_path {
             let sanitizedPosterPath = posterPath.replacingOccurrences(of: "\\", with: "")
             let imageUrlString = "https://image.tmdb.org/t/p/w500/\(sanitizedPosterPath)"

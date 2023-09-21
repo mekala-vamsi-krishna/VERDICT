@@ -14,7 +14,7 @@ class TopRatedViewController: UIViewController {
     private var currentPage = 1
     private var headerView: SegmentedHeaderView?
     
-    public let topRatedTable: UITableView = {
+    public let tableView: UITableView = {
         let table = UITableView()
         table.showsVerticalScrollIndicator = false
         table.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.identifier)
@@ -25,20 +25,20 @@ class TopRatedViewController: UIViewController {
         super.viewDidLoad()
         title = "Top Rated"
         navigationController?.navigationBar.prefersLargeTitles = true
-        topRatedTable.delegate = self
-        topRatedTable.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
         headerView = SegmentedHeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 60))
         headerView?.delegate = self
-        topRatedTable.tableHeaderView = headerView
-        view.addSubview(topRatedTable)
+        tableView.tableHeaderView = headerView
+        view.addSubview(tableView)
         view.backgroundColor = UIColor(named: "BackgroundColor")
         configureNavbar()
-        fetchTopRatedMovies(page: currentPage, refresh: false)
+        fetchTopRatedMovies(page: currentPage)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        topRatedTable.frame = view.bounds
+        tableView.frame = view.bounds
     }
     
     private func configureNavbar() {
@@ -60,48 +60,31 @@ class TopRatedViewController: UIViewController {
     }
     
     public func fetchTopRatedTv(page: Int, refresh: Bool = false) {
-        guard let url = URL(string: "https://api.themoviedb.org/3/tv/top_rated?api_key=34f1a8f9c59360b0ca5e6cddb936a2d8&") else { return }
-        let params = "language=enUS&page=\(page)"
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = params.data(using: .utf8)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else { return }
-            DispatchQueue.main.async {
-                do {
-                    let myData = try JSONDecoder().decode(TrendingMovieResponse.self, from: data)
-                    self.titles = myData.results
-                    print("Titles Count Tv: \(self.titles.count)")
-                    self.topRatedTable.reloadData()
-                } catch {
-                    print(error.localizedDescription)
+        VDNetworking.shared.getTopRatedTv(page: page) { [weak self] result in
+            switch result {
+            case .success(let titles):
+                self?.titles.append(contentsOf: titles)
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
-    public func fetchTopRatedMovies(page: Int, refresh: Bool = false) {
-        guard let url = URL(string: "https://api.themoviedb.org/3/movie/top_rated?api_key=34f1a8f9c59360b0ca5e6cddb936a2d8&") else { return }
-        let params = "language=enUS&page=\(page)"
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = params.data(using: .utf8)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else { return }
-            DispatchQueue.main.async {
-                do {
-                    let myData = try JSONDecoder().decode(TrendingMovieResponse.self, from: data)
-                    self.titles.append(contentsOf: myData.results)
-                    self.topRatedTable.reloadData()
-                } catch {
-                    print(error.localizedDescription)
+    public func fetchTopRatedMovies(page: Int) {
+        VDNetworking.shared.getTopRatedMovies(page: page) { [weak self] result in
+            switch result {
+            case .success(let titles):
+                self?.titles.append(contentsOf: titles)
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
 }
@@ -154,7 +137,7 @@ extension TopRatedViewController: UITableViewDelegate, UITableViewDataSource {
                 DispatchQueue.main.async { [weak self] in
                     let detailsVC = DetailsViewController()
                     detailsVC.configure(with: data)
-                    detailsVC.getPoser(with: data)
+                    detailsVC.getPoster(with: data)
                     self?.navigationController?.pushViewController(detailsVC, animated: true)
                 }
             case .failure(let error):
@@ -169,11 +152,11 @@ extension TopRatedViewController: SegmentedHeaderViewDelegate {
     func didChangeSegment(_ segment: Int) {
         titles.removeAll()
         if segment == 0 {
-            fetchTopRatedMovies(page: currentPage, refresh: false)
+            fetchTopRatedMovies(page: currentPage)
         } else {
             fetchTopRatedTv(page: currentPage, refresh: false)
         }
-        self.topRatedTable.reloadData()
+        self.tableView.reloadData()
     }
 }
 
