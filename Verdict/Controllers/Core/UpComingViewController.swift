@@ -6,23 +6,36 @@
 //
 
 import UIKit
+import SwiftUI
 
 class UpComingViewController: UIViewController {
     
-    public var titles: [Movie] = [Movie]()
+    public var movies: [Movie] = [Movie]()
+    private var totalPage = 1
+    private var currentPage = 1
+    private var hasFetchedFirstPage = false
     
-    public let upComingResultsCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10, height: 200)
-        layout.minimumInteritemSpacing = 0
+    public let collectionView: UICollectionView = {
+        let layout = compositionalLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
+        collectionView.register(UpcomingCollectionViewCell.self, forCellWithReuseIdentifier: UpcomingCollectionViewCell.identifier)
         return collectionView
     }()
+    
+    static func compositionalLayout() -> UICollectionViewCompositionalLayout {
+        return UICollectionViewCompositionalLayout { (section, _) -> NSCollectionLayoutSection? in
+            let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(300)))
+            item.contentInsets.trailing = 10
+            item.contentInsets.bottom = 20
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(1000)), subitems: [item])
+            let section = NSCollectionLayoutSection(group: group)
+            section.contentInsets.leading = 10
+            return section
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         title = "UpComing"
         navigationController?.navigationBar.prefersLargeTitles = true
 
@@ -34,19 +47,19 @@ class UpComingViewController: UIViewController {
         
         view.backgroundColor = UIColor(named: "BackgroundColor")
         
-        view.addSubview(upComingResultsCollectionView)
+        view.addSubview(collectionView)
         
-        upComingResultsCollectionView.delegate = self
-        upComingResultsCollectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
         configureNavbar()
         
-        fetchUpcoming()
+        fetchUpcoming(page: currentPage)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        upComingResultsCollectionView.frame = view.bounds
+        collectionView.frame = view.bounds
     }
     
     private func configureNavbar() {
@@ -67,13 +80,24 @@ class UpComingViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    private func fetchUpcoming() {
-        VDNetworking.shared.getUpcomingMovies { [weak self] result in
+    private func fetchUpcoming(page: Int) {
+        VDNetworking.shared.getUpcomingMovies(page: page) { [weak self] result in
             switch result {
             case .success(let titles):
-                self?.titles =  titles
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "yyyy-MM-dd"
+//                let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+//
+//                let moviesWithDates = titles.compactMap({
+//                    if let date = dateFormatter.date(from: $0.release_date ?? "00-00-0000"), date >= tomorrow ?? Date() {
+//                        return ($0, date)
+//                    }
+//                    return nil
+//                })
+//                let sortedMoviesWithDates = moviesWithDates.sorted(by: { $0.1 < $1.1 })
+                self?.movies.append(contentsOf: titles)
                 DispatchQueue.main.async {
-                    self?.upComingResultsCollectionView.reloadData()
+                    self?.collectionView.reloadData()
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -83,16 +107,18 @@ class UpComingViewController: UIViewController {
 
 }
 
+// MARK: UICollectionViewDelegate, UICollectionViewDataSource
 extension UpComingViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return titles.count
+        return movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as? TitleCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UpcomingCollectionViewCell.identifier, for: indexPath) as? UpcomingCollectionViewCell else {
             return UICollectionViewCell()
         }
-        let title = titles[indexPath.row]
+        let title = movies[indexPath.row]
         let model = TitleViewModel(titleName: title.title ?? title.original_name ?? title.original_title ?? "Unknown", posterURL: title.poster_path ?? "", overview: title.overview ?? "", vote_average: title.vote_average, release_date: title.release_date ?? "", language: title.original_language ?? "")
         cell.configure(with: model)
         return cell
@@ -101,19 +127,52 @@ extension UpComingViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        let title = titles[indexPath.row]
+        let title = movies[indexPath.row]
         VDNetworking.shared.getMovieDetails(with: title.id) { result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async { [weak self] in
                     let detailsVC = DetailsViewController()
                     detailsVC.configure(with: data)
-                    detailsVC.getPoser(with: data)
+                    detailsVC.getPoster(with: data)
                     self?.navigationController?.pushViewController(detailsVC, animated: true)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let defaultOffSet = view.safeAreaInsets.top
+        let offSetY = scrollView.contentOffset.y + defaultOffSet
+//        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offSetY))
+        let contentHeight = scrollView.contentSize.height
+
+        // Check if the user has scrolled to the bottom
+        if offSetY > contentHeight - scrollView.frame.height {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.currentPage += 1
+                self.fetchUpcoming(page: self.currentPage)
+            }
+        }
+    }
+}
+
+struct Content_Preview: PreviewProvider {
+    static var previews: some View {
+        Container().edgesIgnoringSafeArea(.all)
+    }
+    
+    struct Container: UIViewControllerRepresentable {
+        
+        func makeUIViewController(context: Context) -> UIViewController {
+            UINavigationController(rootViewController: UpComingViewController())
+        }
+        
+        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+        }
+        
+        typealias UIViewControllerType = UIViewController
     }
 }

@@ -93,7 +93,7 @@ extension FavouritesViewController: UITableViewDelegate, UITableViewDataSource {
                 DispatchQueue.main.async { [weak self] in
                     let detailsVC = DetailsViewController()
                     detailsVC.configure(with: data)
-                    detailsVC.getPoser(with: data)
+                    detailsVC.getPoster(with: data)
                     self?.navigationController?.pushViewController(detailsVC, animated: true)
                 }
             case .failure(let error):

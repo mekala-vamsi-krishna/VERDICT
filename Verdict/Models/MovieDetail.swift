@@ -8,24 +8,30 @@
 import Foundation
 
 struct MovieDetail: Codable {
-  let id: Int?
-  let backdrop_path: String?
-  let budget: Int
-  let homepage: String
-  let original_language: String
-  let original_title: String?
-  let overview: String
-  let popularity: Double
-  let poster_path: String?
-  let production_companies: [ProductionCompanies]
-  let release_date: String
-  let revenue: Int
-  let runtime: Int
-  let status: String
-  let tagline: String
-  let title: String?
-  let vote_average: Double
-  let vote_count: Int
+    let id: Int?
+    let backdrop_path: String?
+    let budget: Int?
+    let homepage: String?
+    let original_language: String?
+    let original_title: String?
+    let overview: String?
+    let popularity: Double?
+    let poster_path: String?
+    let genres: [Genres]?
+    let production_companies: [ProductionCompanies]
+    let release_date: String?
+    let revenue: Int?
+    let runtime: Int?
+    let status: String?
+    let tagline: String?
+    let title: String?
+    let vote_average: Double?
+    let vote_count: Int?
+}
+
+struct Genres: Codable {
+    let id: Int?
+    let name: String?
 }
 
 struct ProductionCompanies: Codable {

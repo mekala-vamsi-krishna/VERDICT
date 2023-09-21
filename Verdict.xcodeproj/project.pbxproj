@@ -40,6 +40,7 @@
 		AC103B522AB37070009A3593 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC103B512AB37070009A3593 /* ProfileHeaderView.swift */; };
 		AC4D4A722AB48AA500C4AAB1 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC4D4A712AB48AA500C4AAB1 /* ProfileTableViewCell.swift */; };
 		AC9F50442AA4E20B00A39F62 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9F50432AA4E20B00A39F62 /* MovieDetail.swift */; };
+		ACBE13742ABBD7D200CB3D86 /* UpcomingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBE13732ABBD7D200CB3D86 /* UpcomingCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		AC103B512AB37070009A3593 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		AC4D4A712AB48AA500C4AAB1 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		AC9F50432AA4E20B00A39F62 /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
+		ACBE13732ABBD7D200CB3D86 /* UpcomingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 				151C8450298D6FFD009DB7AE /* FavouritesTableViewCell.swift */,
 				AC103B512AB37070009A3593 /* ProfileHeaderView.swift */,
 				AC4D4A712AB48AA500C4AAB1 /* ProfileTableViewCell.swift */,
+				ACBE13732ABBD7D200CB3D86 /* UpcomingCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 				15A1C1DD2955ED86006849BC /* SceneDelegate.swift in Sources */,
 				15A1C23C2956D422006849BC /* Movie.swift in Sources */,
 				15B6ABAE297413B2002BEBC1 /* SegmentedHeaderView.swift in Sources */,
+				ACBE13742ABBD7D200CB3D86 /* UpcomingCollectionViewCell.swift in Sources */,
 				15A1C24A2956D43E006849BC /* TitlePreviewViewModel.swift in Sources */,
 				15A1C2452956D42B006849BC /* HeroHeaderUIView.swift in Sources */,
 				15A1C2382956D411006849BC /* VDNetworking.swift in Sources */,

@@ -55,11 +55,15 @@ class VDNetworking {
         task.resume()
     }
     
-    func getUpcomingMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
+    func getUpcomingMovies(page: Int, completion: @escaping (Result<[Movie], Error>) -> Void) {
         
         guard let url = URL(string: "\(Constants.baseURL)/3/movie/upcoming?api_key=\(Constants.API_KEY)&language=enUS&page=1") else { return }
+        let params = "language=enUS&page=\(page)"
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = params.data(using: .utf8)
         
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
             
             guard let data = data, error == nil else { return }
             
@@ -91,9 +95,35 @@ class VDNetworking {
         task.resume()
     }
     
-    func getTopRated(page: Int,completion: @escaping (Result<[Movie], Error>) -> Void) {
+    func getTopRatedMovies(page: Int, completion: @escaping (Result<[Movie], Error>) -> Void) {
         
         guard let url = URL(string: "\(Constants.baseURL)/3/movie/top_rated?api_key=\(Constants.API_KEY)&language=enUS&page=\(page)") else { return }
+        let params = "language=enUS&page=\(page)"
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = params.data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+            
+            guard let data = data, error == nil else { return }
+            
+            do {
+                let results = try JSONDecoder().decode(TrendingMovieResponse.self, from: data)
+                completion(.success(results.results))
+            } catch {
+                completion(.failure(APIError.failedToGetData))
+            }
+        }
+        task.resume()
+    }
+    
+    func getTopRatedTv(page: Int, completion: @escaping (Result<[Movie], Error>) -> Void) {
+        
+        guard let url = URL(string: "\(Constants.baseURL)/3/tv/top_rated?api_key=\(Constants.API_KEY)&language=enUS&page=\(page)") else { return }
+        let params = "language=enUS&page=\(page)"
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = params.data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             
